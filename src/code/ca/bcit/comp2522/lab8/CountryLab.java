@@ -8,9 +8,9 @@ import java.nio.file.StandardOpenOption;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
-public class main {
+public class CountryLab
+{
     public static void main(final String[] args) {
 
         List<String> countries = List.of(); // Initialize empty list to prevent errors

@@ -1,4 +1,6 @@
-/*import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+import ca.bcit.comp2522.lab8.CountryLab;
 import org.junit.jupiter.api.*;
 import java.nio.file.*;
 import java.io.IOException;
