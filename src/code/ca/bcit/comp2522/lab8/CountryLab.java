@@ -5,41 +5,92 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 public class CountryLab
 {
-    public static void main(final String[] args)
+    private final Path dataPath;
+
+    public CountryLab(final Path dirPath,
+                      final Path dataPath)
     {
 
+        // create directory if not exist
+        if(!Files.exists(dirPath))
+        {
+            try
+            {
+                Files.createDirectory(dirPath);
+            }
+            catch(IOException e)
+            {
+                throw new RuntimeException(e);
+            }
+        }
+
+        // create file if not exist,
+        // if exist, erase it
+        try
+        {
+            Files.writeString(
+                    dataPath,
+                    "",
+                    StandardOpenOption.CREATE
+            );
+        }
+        catch(IOException e)
+        {
+            throw new RuntimeException(e);
+        }
+
+        this.dataPath = dataPath;
+    }
+
+    public void writelnToFile(String string)
+    {
+        try
+        {
+            Files.writeString(
+                    dataPath,
+                    string + "\n",
+                    StandardOpenOption.CREATE,
+                    StandardOpenOption.APPEND
+                    // Prevents overwriting existing content
+            );
+        }
+        catch(IOException e)
+        {
+            System.err.println("Error writing file: " + e.getMessage());
+        }
+    }
+
+    public static void main(final String[] args)
+    {
         List<String> countries;
-        final String dataMessage;
         final Path   dirPath;
         final Path   dataPath;
 
-        final List<String>     longNames;
-        final List<String>     shortNames;
-        final List<String>     startA;
-        final List<String>     endingLand;
-        final List<String>     containsUnited;
-        final List<String>     sortedAlpha;
-        final List<String>     sortedAlphaDesc;
-        final List<String>     uniqueFirstLetter;
+        final Stream<String>   longNames;
+        final Stream<String>   shortNames;
+        final Stream<String>   startA;
+        final Stream<String>   endingLand;
+        final Stream<String>   containsUnited;
+        final Stream<String>   sortedAlpha;
+        final Stream<String>   sortedAlphaDesc;
+        final Stream<String>   uniqueFirstLetter;
         final long             countryCount;
         final Optional<String> longestName;
         final Optional<String> shortestName;
-        final List<String>     upperNames;
-        final List<String>     moreThanOneWord;
-        final List<String>     mapToChars;
+        final Stream<String>   upperNames;
+        final Stream<String>   moreThanOneWord;
+        final Stream<String>   mapToChars;
         final boolean          startWithZ;
         final boolean          moreThanThreeChars;
 
-        countries   = List.of(); // in case file is unreadable
-        dataMessage = "";
-
-        // Define output file paths
         dirPath  = Paths.get("src",
                              "code",
                              "ca",
@@ -48,6 +99,9 @@ public class CountryLab
                              "lab8",
                              "matches");
         dataPath = dirPath.resolve("data.txt");
+        CountryLab countryLab = new CountryLab(dirPath, dataPath);
+
+        countries = List.of(); // in case input file is unreadable
 
         try
         {
@@ -63,7 +117,8 @@ public class CountryLab
             // Check if file exists before reading
             if(!Files.exists(path))
             {
-                System.out.println("Error: File not found at " + path.toAbsolutePath());
+                System.out.println(
+                        "Error: File not found at " + path.toAbsolutePath());
                 return;
             }
 
@@ -79,113 +134,95 @@ public class CountryLab
         // 1. Filter long country names
         longNames = countries.stream()
                              .filter(p -> p.length() > 10)
-                             .toList();
-        longNames.forEach(System.out::println);
+        ;
+        longNames.forEach(countryLab::writelnToFile);
 
         // 2. short names
         shortNames = countries.stream()
                               .filter(p -> p.length() < 5)
-                              .toList();
-        shortNames.forEach(System.out::println);
+        ;
+        shortNames.forEach(countryLab::writelnToFile);
 
         // 3. starting with A
         startA = countries.stream()
                           .filter(p -> p.substring(0, 1)
                                         .equalsIgnoreCase("a"))
-                          .toList();
-        startA.forEach(System.out::println);
+        ;
+        startA.forEach(countryLab::writelnToFile);
 
         // 4. Ending with land
         endingLand = countries.stream()
                               .filter(p -> p.endsWith("land"))
-                              .toList();
-        endingLand.forEach(System.out::println);
+        ;
+        endingLand.forEach(countryLab::writelnToFile);
 
         // 5. Ending with land
         containsUnited = countries.stream()
                                   .filter(p -> p.toLowerCase()
                                                 .contains("united"))
-                                  .toList();
-        containsUnited.forEach(System.out::println);
+        ;
+        containsUnited.forEach(countryLab::writelnToFile);
 
         // 6. Sorted alpha
         sortedAlpha = countries.stream()
                                .sorted()
-                               .toList();
-        sortedAlpha.forEach(System.out::println);
+        ;
+        sortedAlpha.forEach(countryLab::writelnToFile);
 
         // 7. Sorted alpha desc
-        sortedAlphaDesc = sortedAlpha.reversed();
-        sortedAlphaDesc.forEach(System.out::println);
+        sortedAlphaDesc = countries.stream()
+                                   .sorted(Collections.reverseOrder());
+        sortedAlphaDesc.forEach(countryLab::writelnToFile);
 
         // 8. Unique first letter
         uniqueFirstLetter = countries.stream()
                                      .map(p -> p.substring(0, 1))
                                      .distinct()
-                                     .toList();
-        uniqueFirstLetter.forEach(System.out::println);
+        ;
+        uniqueFirstLetter.forEach(countryLab::writelnToFile);
 
         // 9. Country count
         countryCount = countries.stream()
                                 .count();
-        System.out.printf("There are %d countries\n", countryCount);
+        countryLab.writelnToFile("There are " + countryCount + " countries\n");
 
         // 10. Longest name
         longestName = countries.stream()
                                .max(Comparator.comparingInt(String::length));
-        longestName.ifPresent(System.out::println);
+        longestName.ifPresent(countryLab::writelnToFile);
 
         // 11. Shortest name
         shortestName = countries.stream()
                                 .min(Comparator.comparingInt(String::length));
-        shortestName.ifPresent(System.out::println);
+        shortestName.ifPresent(countryLab::writelnToFile);
 
         // 12. Names in uppercase
         upperNames = countries.stream()
                               .map(String::toUpperCase)
-                              .toList();
-        upperNames.forEach(System.out::println);
+        ;
+        upperNames.forEach(countryLab::writelnToFile);
 
         // 13. Names with more than one word
         moreThanOneWord = countries.stream()
                                    .filter(p -> p.contains(" "))
-                                   .toList();
-        moreThanOneWord.forEach(System.out::println);
+        ;
+        moreThanOneWord.forEach(countryLab::writelnToFile);
 
         // 14. Map to number of characters
         mapToChars = countries.stream()
                               .map(p -> p + ": " + p.length() +
-                                        " characters")
-                              .toList();
-        mapToChars.forEach(System.out::println);
+                                        " characters");
+        mapToChars.forEach(countryLab::writelnToFile);
 
         // 15. Does it start with Z?
         startWithZ = countries.stream()
                               .anyMatch(s -> s.toLowerCase().startsWith("z"));
-        System.out.println("Does any country start with z? " + startWithZ);
+        countryLab.writelnToFile("Does any country start with z? " + startWithZ);
 
         // 15. Do all names have more than 3 chars?
         moreThanThreeChars = countries.stream()
                                       .allMatch(s -> s.length() > 3);
-        System.out.println("Do all countries have more than 3 characters? " +
-                           moreThanThreeChars);
-
-        try
-        {
-            Files.createDirectories(dirPath); // Create directory if it doesn’t exist
-
-            Files.writeString(
-                    dataPath,
-                    dataMessage,
-                    StandardOpenOption.CREATE,
-                    StandardOpenOption.APPEND // Prevents overwriting existing content
-            );
-
-            System.out.println("Data has been saved to " + dataPath.toAbsolutePath());
-        }
-        catch(IOException e)
-        {
-            System.err.println("Error writing file: " + e.getMessage());
-        }
+        countryLab.writelnToFile("Do all countries have more than 3 characters? " +
+                                 moreThanThreeChars);
     }
 }
