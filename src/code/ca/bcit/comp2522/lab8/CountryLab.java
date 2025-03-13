@@ -14,28 +14,51 @@ public class CountryLab
     public static void main(final String[] args)
     {
 
-        List<String> countries   = List.of(); // Initialize empty list to prevent errors
-        String       dataMessage = "";
+        List<String> countries;
+        final String dataMessage;
+        final Path   dirPath;
+        final Path   dataPath;
+
+        final List<String>     longNames;
+        final List<String>     shortNames;
+        final List<String>     startA;
+        final List<String>     endingLand;
+        final List<String>     containsUnited;
+        final List<String>     sortedAlpha;
+        final List<String>     sortedAlphaDesc;
+        final List<String>     uniqueFirstLetter;
+        final long             countryCount;
+        final Optional<String> longestName;
+        final Optional<String> shortestName;
+        final List<String>     upperNames;
+        final List<String>     moreThanOneWord;
+        final List<String>     mapToChars;
+        final boolean          startWithZ;
+        final boolean          moreThanThreeChars;
+
+        countries   = List.of(); // in case file is unreadable
+        dataMessage = "";
 
         // Define output file paths
-        Path dirPath = Paths.get("src",
-                                 "code",
-                                 "ca",
-                                 "bcit",
-                                 "comp2522",
-                                 "lab8",
-                                 "matches");
-        Path dataPath = dirPath.resolve("data.txt");
+        dirPath  = Paths.get("src",
+                             "code",
+                             "ca",
+                             "bcit",
+                             "comp2522",
+                             "lab8",
+                             "matches");
+        dataPath = dirPath.resolve("data.txt");
 
         try
         {
-            Path path = Paths.get("src",
-                                  "code",
-                                  "ca",
-                                  "bcit",
-                                  "comp2522",
-                                  "lab8",
-                                  "week8countries.txt");
+            final Path path;
+            path = Paths.get("src",
+                             "code",
+                             "ca",
+                             "bcit",
+                             "comp2522",
+                             "lab8",
+                             "week8countries.txt");
 
             // Check if file exists before reading
             if(!Files.exists(path))
@@ -48,105 +71,104 @@ public class CountryLab
             System.out.println("Countries read successfully: " + countries.size());
 
         }
-        catch(IOException e)
+        catch(final IOException e)
         {
             System.err.println("Error reading file: " + e.getMessage());
         }
 
         // 1. Filter long country names
-        List<String> longNames = countries.stream()
-                                          .filter(p -> p.length() > 10)
-                                          .toList();
+        longNames = countries.stream()
+                             .filter(p -> p.length() > 10)
+                             .toList();
         longNames.forEach(System.out::println);
 
         // 2. short names
-        List<String> shortNames = countries.stream()
-                                           .filter(p -> p.length() < 5)
-                                           .toList();
+        shortNames = countries.stream()
+                              .filter(p -> p.length() < 5)
+                              .toList();
         shortNames.forEach(System.out::println);
 
         // 3. starting with A
-        List<String> startA = countries.stream()
-                                       .filter(p -> p.substring(0, 1)
-                                                     .equalsIgnoreCase("a"))
-                                       .toList();
+        startA = countries.stream()
+                          .filter(p -> p.substring(0, 1)
+                                        .equalsIgnoreCase("a"))
+                          .toList();
         startA.forEach(System.out::println);
 
         // 4. Ending with land
-        List<String> endingLand = countries.stream()
-                                           .filter(p -> p.endsWith("land"))
-                                           .toList();
+        endingLand = countries.stream()
+                              .filter(p -> p.endsWith("land"))
+                              .toList();
         endingLand.forEach(System.out::println);
 
         // 5. Ending with land
-        List<String> containsUnited = countries.stream()
-                                               .filter(p -> p.toLowerCase()
-                                                             .contains("united"))
-                                               .toList();
+        containsUnited = countries.stream()
+                                  .filter(p -> p.toLowerCase()
+                                                .contains("united"))
+                                  .toList();
         containsUnited.forEach(System.out::println);
 
         // 6. Sorted alpha
-        List<String> sortedAlpha = countries.stream()
-                                            .sorted()
-                                            .toList();
+        sortedAlpha = countries.stream()
+                               .sorted()
+                               .toList();
         sortedAlpha.forEach(System.out::println);
 
         // 7. Sorted alpha desc
-        List<String> sortedAlphaDesc = sortedAlpha.reversed();
+        sortedAlphaDesc = sortedAlpha.reversed();
         sortedAlphaDesc.forEach(System.out::println);
 
         // 8. Unique first letter
-        List<String> uniqueFirstLetter = countries.stream()
-                                                  .map(p -> p.substring(0, 1))
-                                                  .distinct()
-                                                  .toList();
+        uniqueFirstLetter = countries.stream()
+                                     .map(p -> p.substring(0, 1))
+                                     .distinct()
+                                     .toList();
         uniqueFirstLetter.forEach(System.out::println);
 
         // 9. Country count
-        long countryCount = countries.stream()
-                                     .count();
+        countryCount = countries.stream()
+                                .count();
         System.out.printf("There are %d countries\n", countryCount);
 
         // 10. Longest name
-        Optional<String> longestName = countries.stream()
-                                                .max(Comparator.comparingInt(String::length));
+        longestName = countries.stream()
+                               .max(Comparator.comparingInt(String::length));
         longestName.ifPresent(System.out::println);
 
         // 11. Shortest name
-        Optional<String> shortestName = countries.stream()
-                                                 .min(Comparator.comparingInt(String::length));
+        shortestName = countries.stream()
+                                .min(Comparator.comparingInt(String::length));
         shortestName.ifPresent(System.out::println);
 
         // 12. Names in uppercase
-        List<String> upperNames = countries.stream()
-                                           .map(String::toUpperCase)
-                                           .toList();
+        upperNames = countries.stream()
+                              .map(String::toUpperCase)
+                              .toList();
         upperNames.forEach(System.out::println);
 
         // 13. Names with more than one word
-        List<String> moreThanOneWord = countries.stream()
-                                                .filter(p -> p.contains(" "))
-                                                .toList();
+        moreThanOneWord = countries.stream()
+                                   .filter(p -> p.contains(" "))
+                                   .toList();
         moreThanOneWord.forEach(System.out::println);
 
         // 14. Map to number of characters
-        List<String> mapToChars = countries.stream()
-                                           .map(p -> p + ": " + p.length() +
-                                                     " characters")
-                                           .toList();
+        mapToChars = countries.stream()
+                              .map(p -> p + ": " + p.length() +
+                                        " characters")
+                              .toList();
         mapToChars.forEach(System.out::println);
 
         // 15. Does it start with Z?
-        boolean startWithZ = countries.stream()
-                                      .anyMatch(s -> s.toLowerCase().startsWith("z"));
+        startWithZ = countries.stream()
+                              .anyMatch(s -> s.toLowerCase().startsWith("z"));
         System.out.println("Does any country start with z? " + startWithZ);
 
         // 15. Do all names have more than 3 chars?
-        boolean moreThanThreeChars = countries.stream()
-                                              .allMatch(s -> s.length() > 3);
-        System.out.println(
-                "Do all countries have more than 3 characters? " + moreThanThreeChars);
-
+        moreThanThreeChars = countries.stream()
+                                      .allMatch(s -> s.length() > 3);
+        System.out.println("Do all countries have more than 3 characters? " +
+                           moreThanThreeChars);
 
         try
         {
