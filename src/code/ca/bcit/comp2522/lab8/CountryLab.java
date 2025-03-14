@@ -178,38 +178,53 @@ public class CountryLab
         // 10. Longest name
         longestName = countries.stream()
                                .max(Comparator.comparingInt(String::length));
-        longestName.ifPresent(countryLab::writelnToFile);
+        longestName.ifPresent(name ->
+                                      countryLab.writelnToFile(
+                                              "\nLongest country name: " + name)
+        );
 
         // 11. Shortest name
         shortestName = countries.stream()
                                 .min(Comparator.comparingInt(String::length));
-        shortestName.ifPresent(countryLab::writelnToFile);
+        shortestName.ifPresent(name ->
+                                       countryLab.writelnToFile(
+                                               "\nShortest country name: " + name)
+        );
 
         // 12. Names in uppercase
         upperNames = countries.stream()
                               .map(String::toUpperCase);
+        countryLab.writelnToFile("\nCountry names in uppercase:");
         upperNames.forEach(countryLab::writelnToFile);
 
         // 13. Names with more than one word
         moreThanOneWord = countries.stream()
                                    .filter(p -> p.contains(" "));
+        countryLab.writelnToFile("\nCountry names with more than one word:");
         moreThanOneWord.forEach(countryLab::writelnToFile);
 
         // 14. Map to number of characters
         mapToChars = countries.stream()
                               .map(p -> p + ": " + p.length() +
                                         " characters");
+        countryLab.writelnToFile("\nNumber of characters in each country name:");
         mapToChars.forEach(countryLab::writelnToFile);
 
         // 15. Does it start with Z?
         startWithZ = countries.stream()
                               .anyMatch(s -> s.toLowerCase().startsWith("z"));
-        countryLab.writelnToFile("Does any country start with z? " + startWithZ);
+        countryLab.writelnToFile("\nDoes any country start with z? " +
+                                 (startWithZ
+                                  ? "Yes"
+                                  : "No")
+        );
 
         // 15. Do all names have more than 3 chars?
         moreThanThreeChars = countries.stream()
                                       .allMatch(s -> s.length() > 3);
-        countryLab.writelnToFile("Do all countries have more than 3 characters? " +
-                                 moreThanThreeChars);
+        countryLab.writelnToFile("\nDo all countries have more than 3 characters? " +
+                                 (moreThanThreeChars
+                                  ? "Yes"
+                                  : "No"));
     }
 }

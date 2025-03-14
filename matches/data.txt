@@ -502,10 +502,14 @@ V
 W
 Y
 Z
+
 There are 200 countries
 
-Congo, Democratic Republic of the
-Chad
+Longest country name: Congo, Democratic Republic of the
+
+Shortest country name: Chad
+
+Country names in uppercase:
 AFGHANISTAN
 ALBANIA
 ALGERIA
@@ -706,6 +710,8 @@ WALES
 YEMEN
 ZAMBIA
 ZIMBABWE
+
+Country names with more than one word:
 Antigua and Barbuda
 Bosnia and Herzegovina
 Burkina Faso
@@ -746,6 +752,8 @@ United Arab Emirates
 United Kingdom
 United States
 Vatican City
+
+Number of characters in each country name:
 Afghanistan: 11 characters
 Albania: 7 characters
 Algeria: 7 characters
@@ -946,5 +954,7 @@ Wales: 5 characters
 Yemen: 5 characters
 Zambia: 6 characters
 Zimbabwe: 8 characters
-Does any country start with z? true
-Do all countries have more than 3 characters? true
+
+Does any country start with z? Yes
+
+Do all countries have more than 3 characters? Yes
