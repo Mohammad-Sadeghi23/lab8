@@ -3,7 +3,6 @@ package ca.bcit.comp2522.lab8;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.Collections;
 import java.util.Comparator;
@@ -116,7 +115,7 @@ public class CountryLab
         final boolean          startWithZ;
         final boolean          moreThanThreeChars;
 
-        dirPath  = Paths.get("matches");
+        dirPath  = Path.of("matches");
         dataPath = dirPath.resolve("data.txt");
         CountryLab countryLab = new CountryLab(dirPath, dataPath);
 
@@ -125,13 +124,13 @@ public class CountryLab
         try
         {
             final Path path;
-            path = Paths.get("src",
-                             "code",
-                             "ca",
-                             "bcit",
-                             "comp2522",
-                             "lab8",
-                             "week8countries.txt");
+            path = Path.of("src",
+                           "code",
+                           "ca",
+                           "bcit",
+                           "comp2522",
+                           "lab8",
+                           "week8countries.txt");
 
             // Check if file exists before reading
             if(!Files.exists(path))
