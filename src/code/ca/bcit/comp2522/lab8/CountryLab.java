@@ -91,13 +91,7 @@ public class CountryLab
         final boolean          startWithZ;
         final boolean          moreThanThreeChars;
 
-        dirPath  = Paths.get("src",
-                             "code",
-                             "ca",
-                             "bcit",
-                             "comp2522",
-                             "lab8",
-                             "matches");
+        dirPath  = Paths.get("matches");
         dataPath = dirPath.resolve("data.txt");
         CountryLab countryLab = new CountryLab(dirPath, dataPath);
 
@@ -133,40 +127,36 @@ public class CountryLab
 
         // 1. Filter long country names
         longNames = countries.stream()
-                             .filter(p -> p.length() > 10)
-        ;
+                             .filter(p -> p.length() > 10);
+        countryLab.writelnToFile("Country names longer than 10 characters:");
         longNames.forEach(countryLab::writelnToFile);
 
         // 2. short names
         shortNames = countries.stream()
-                              .filter(p -> p.length() < 5)
-        ;
+                              .filter(p -> p.length() < 5);
         shortNames.forEach(countryLab::writelnToFile);
 
         // 3. starting with A
         startA = countries.stream()
                           .filter(p -> p.substring(0, 1)
-                                        .equalsIgnoreCase("a"))
-        ;
+                                        .equalsIgnoreCase("a"));
+        countryLab.writelnToFile("\nCountry names starting with 'A':");
         startA.forEach(countryLab::writelnToFile);
 
         // 4. Ending with land
         endingLand = countries.stream()
-                              .filter(p -> p.endsWith("land"))
-        ;
+                              .filter(p -> p.endsWith("land"));
         endingLand.forEach(countryLab::writelnToFile);
 
         // 5. Ending with land
         containsUnited = countries.stream()
                                   .filter(p -> p.toLowerCase()
-                                                .contains("united"))
-        ;
+                                                .contains("united"));
         containsUnited.forEach(countryLab::writelnToFile);
 
         // 6. Sorted alpha
         sortedAlpha = countries.stream()
-                               .sorted()
-        ;
+                               .sorted();
         sortedAlpha.forEach(countryLab::writelnToFile);
 
         // 7. Sorted alpha desc
@@ -177,14 +167,13 @@ public class CountryLab
         // 8. Unique first letter
         uniqueFirstLetter = countries.stream()
                                      .map(p -> p.substring(0, 1))
-                                     .distinct()
-        ;
+                                     .distinct();
         uniqueFirstLetter.forEach(countryLab::writelnToFile);
 
         // 9. Country count
         countryCount = countries.stream()
                                 .count();
-        countryLab.writelnToFile("There are " + countryCount + " countries\n");
+        countryLab.writelnToFile("\nThere are " + countryCount + " countries");
 
         // 10. Longest name
         longestName = countries.stream()
@@ -198,14 +187,12 @@ public class CountryLab
 
         // 12. Names in uppercase
         upperNames = countries.stream()
-                              .map(String::toUpperCase)
-        ;
+                              .map(String::toUpperCase);
         upperNames.forEach(countryLab::writelnToFile);
 
         // 13. Names with more than one word
         moreThanOneWord = countries.stream()
-                                   .filter(p -> p.contains(" "))
-        ;
+                                   .filter(p -> p.contains(" "));
         moreThanOneWord.forEach(countryLab::writelnToFile);
 
         // 14. Map to number of characters
