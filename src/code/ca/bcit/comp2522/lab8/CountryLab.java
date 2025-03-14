@@ -11,10 +11,25 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+/**
+ * Demonstrates how to read and write files and handle streams.
+ *
+ * @author Felix
+ * @author Mohammad
+ * @version 0.0.1
+ */
 public class CountryLab
 {
     private final Path dataPath;
 
+    /**
+     * Creates an instance that stores the path to the output file,
+     * and initializes the file's state (create it if not exist, otherwise
+     * wipe it blank).
+     *
+     * @param dirPath  path to the file's directory
+     * @param dataPath path to the file
+     */
     public CountryLab(final Path dirPath,
                       final Path dataPath)
     {
@@ -50,16 +65,21 @@ public class CountryLab
         this.dataPath = dataPath;
     }
 
-    public void writelnToFile(String string)
+    /**
+     * Writes a line to the file.
+     * A newline character is automatically added.
+     *
+     * @param line the line to write
+     */
+    public void writelnToFile(String line)
     {
         try
         {
             Files.writeString(
                     dataPath,
-                    string + "\n",
+                    line + "\n",
                     StandardOpenOption.CREATE,
                     StandardOpenOption.APPEND
-                    // Prevents overwriting existing content
             );
         }
         catch(IOException e)
@@ -68,6 +88,11 @@ public class CountryLab
         }
     }
 
+    /**
+     * Program's entry point.
+     *
+     * @param args unsued
+     */
     public static void main(final String[] args)
     {
         List<String> countries;
@@ -225,6 +250,7 @@ public class CountryLab
         countryLab.writelnToFile("\nDo all countries have more than 3 characters? " +
                                  (moreThanThreeChars
                                   ? "Yes"
-                                  : "No"));
+                                  : "No")
+        );
     }
 }
