@@ -169,7 +169,7 @@ public class CountryLab
 
         // 4. Ending with land
         endingLand = countries.stream()
-                              .filter(p -> p.endsWith("land"));
+                              .filter(p -> p.toLowerCase().endsWith("land"));
         endingLand.forEach(countryLab::writelnToFile);
 
         // 5. Ending with land
@@ -223,7 +223,7 @@ public class CountryLab
 
         // 13. Names with more than one word
         moreThanOneWord = countries.stream()
-                                   .filter(p -> p.contains(" "));
+                                   .filter(p -> p.trim().contains(" "));
         countryLab.writelnToFile("\nCountry names with more than one word:");
         moreThanOneWord.forEach(countryLab::writelnToFile);
 
@@ -243,7 +243,7 @@ public class CountryLab
                                   : "No")
         );
 
-        // 15. Do all names have more than 3 chars?
+        // 16. Do all names have more than 3 chars?
         moreThanThreeChars = countries.stream()
                                       .allMatch(s -> s.length() > 3);
         countryLab.writelnToFile("\nDo all countries have more than 3 characters? " +
